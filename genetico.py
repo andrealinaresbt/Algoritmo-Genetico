@@ -12,6 +12,7 @@ def seleccionar(poblacion, fitnesses):
     return random.choices(poblacion, weights=fitnesses, k=2)
 
 
+
 def cruzar(p1, p2):
     return [(x + y) / 2 for x, y in zip(p1, p2)]
 
@@ -38,6 +39,10 @@ def algoritmo_genetico(fitness_func, dimension, rango, tamaño_poblacion, umbral
 
         nueva_poblacion = []
         while len(nueva_poblacion) < tamaño_poblacion:
+            # Asegurar que todos los fitness sean finitos
+            if not all(math.isfinite(f) for f in fitnesses):
+                raise ValueError("Fitnesses contiene valores no finitos (inf o nan): " + str(fitnesses))
+
             p1, p2 = seleccionar(poblacion, fitnesses)
             hijo = cruzar(p1, p2)
             hijo_mutado = mutar(hijo, variabilidad, rango)
