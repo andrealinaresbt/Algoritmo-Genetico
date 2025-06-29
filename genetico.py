@@ -6,7 +6,11 @@ def inicializar_poblacion(tamaño, dimension, rango):
     return [[random.uniform(*rango) for _ in range(dimension)] for _ in range(tamaño)]
 
 def seleccionar(poblacion, fitnesses):
+    min_fit = min(fitnesses)
+    if min_fit <= 0:
+        fitnesses = [f - min_fit + 1e-6 for f in fitnesses]  
     return random.choices(poblacion, weights=fitnesses, k=2)
+
 
 def cruzar(p1, p2):
     return [(x + y) / 2 for x, y in zip(p1, p2)]
